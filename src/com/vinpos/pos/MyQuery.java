@@ -947,7 +947,7 @@ public class MyQuery {
            
             String testquery = "SELECT ppl FROM R.check WHERE R.check.since BETWEEN '"+this.getAllDaysInOneYearDateDBNoTimeFormat(yearsbefore,day)+" 00:00:00' AND '"+this.getAllDaysInOneYearDateDBNoTimeFormat(yearsbefore,day)+" 23:59:59'";
             ResultSet massheadcount_rs;
-             System.out.println(testquery);
+            
             PreparedStatement massheadcount_ps;
             try{
                

@@ -1768,9 +1768,24 @@ public class Table extends javax.swing.JFrame {
     }//GEN-LAST:event_W2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        if(t.isAlive()){
-            t.interrupt();
-        }t.start();
+        jPanel1.removeAll();
+        jPanel1.validate();
+        jPanel1.repaint();
+        ArrayList<Object> componentForDayCourt = new ArrayList<Object>();
+        componentForDayCourt.add(jPanel1);
+        componentForDayCourt.add(DayCountLabelPanel);
+        componentForDayCourt.add(dayCountDate);
+        componentForDayCourt.add(dayCountDay);
+        componentForDayCourt.add(dayCountHead);
+        componentForDayCourt.add(dayCountDate1);
+        componentForDayCourt.add(dayCountDay1);
+        componentForDayCourt.add(dayCountHead1);
+        componentForDayCourt.add(dayCountDate2);
+        componentForDayCourt.add(dayCountDay2);
+        componentForDayCourt.add(dayCountHead2);
+        t=new Thread(new PaintStaticBars(componentForDayCourt, myQ));
+        t.start();
+        
     }//GEN-LAST:event_jButton5ActionPerformed
      public void test()
          throws SocketException {
