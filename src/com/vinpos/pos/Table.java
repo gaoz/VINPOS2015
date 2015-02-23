@@ -98,7 +98,14 @@ public class Table extends javax.swing.JFrame {
         timer3= new Timer();
         myTime = new MyTimer();
         myRestartTimer = new MyRestartTimer();
-        myPrinterServerTimer = new MyPrinterServerTimer();
+        myPrinterServerTimer = new MyPrinterServerTimer();  
+        t = new Thread(new PaintStaticBars(this.getHeaderCountPanelComponents(), myQ));
+        t.start();
+       
+        //myRegisterPrinterServerTimer = new MyRegisterPrinterServerTimer();
+       
+    }
+    public ArrayList<Object>getHeaderCountPanelComponents(){
         ArrayList<Object> componentForDayCourt = new ArrayList<Object>();
         componentForDayCourt.add(jPanel1);
         componentForDayCourt.add(DayCountLabelPanel);
@@ -111,13 +118,9 @@ public class Table extends javax.swing.JFrame {
         componentForDayCourt.add(dayCountDate2);
         componentForDayCourt.add(dayCountDay2);
         componentForDayCourt.add(dayCountHead2);
-        t = new Thread(new PaintStaticBars(componentForDayCourt, myQ));
-        t.start();
-       
-        //myRegisterPrinterServerTimer = new MyRegisterPrinterServerTimer();
-       
+        componentForDayCourt.add(resetHead);
+        return componentForDayCourt;
     }
-    
     class MyTimer extends TimerTask{
         
       
@@ -509,7 +512,7 @@ public class Table extends javax.swing.JFrame {
         dayCountDate2 = new javax.swing.JLabel();
         dayCountDay2 = new javax.swing.JLabel();
         dayCountHead2 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
+        resetHead = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -1460,16 +1463,16 @@ public class Table extends javax.swing.JFrame {
 
         jPanel2.add(DayCountLabelPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1150, 510, 300, 130));
 
-        jButton5.setBackground(new java.awt.Color(204, 0, 153));
-        jButton5.setForeground(new java.awt.Color(255, 255, 102));
-        jButton5.setText("Refresh HeadCount Data");
-        jButton5.setToolTipText("");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        resetHead.setBackground(new java.awt.Color(204, 0, 153));
+        resetHead.setForeground(new java.awt.Color(255, 255, 102));
+        resetHead.setText("Refresh HeadCount Data");
+        resetHead.setToolTipText("");
+        resetHead.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                resetHeadActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1150, 640, 300, 40));
+        jPanel2.add(resetHead, new org.netbeans.lib.awtextra.AbsoluteConstraints(1150, 640, 300, 40));
 
         jLabel2.setForeground(new java.awt.Color(255, 51, 255));
         jLabel2.setText("Click on the bars to see the detail head count data on the right panel ");
@@ -1767,26 +1770,15 @@ public class Table extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_W2ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void resetHeadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetHeadActionPerformed
         jPanel1.removeAll();
         jPanel1.validate();
         jPanel1.repaint();
-        ArrayList<Object> componentForDayCourt = new ArrayList<Object>();
-        componentForDayCourt.add(jPanel1);
-        componentForDayCourt.add(DayCountLabelPanel);
-        componentForDayCourt.add(dayCountDate);
-        componentForDayCourt.add(dayCountDay);
-        componentForDayCourt.add(dayCountHead);
-        componentForDayCourt.add(dayCountDate1);
-        componentForDayCourt.add(dayCountDay1);
-        componentForDayCourt.add(dayCountHead1);
-        componentForDayCourt.add(dayCountDate2);
-        componentForDayCourt.add(dayCountDay2);
-        componentForDayCourt.add(dayCountHead2);
-        t=new Thread(new PaintStaticBars(componentForDayCourt, myQ));
+        
+        t=new Thread(new PaintStaticBars(this.getHeaderCountPanelComponents(), myQ));
         t.start();
         
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_resetHeadActionPerformed
      public void test()
          throws SocketException {
             Enumeration<NetworkInterface> nets =
@@ -2388,7 +2380,6 @@ public class Table extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2424,6 +2415,7 @@ public class Table extends javax.swing.JFrame {
     private javax.swing.JLabel lunchheadCountLabel4;
     private javax.swing.JLabel lunchheadCountLabel5;
     private javax.swing.JLabel lunchheadCountLabel6;
+    public javax.swing.JButton resetHead;
     // End of variables declaration//GEN-END:variables
 
     
@@ -2459,7 +2451,7 @@ public class Table extends javax.swing.JFrame {
     private CakeOrderPan cakeOrderPan;
     private SettingPane settingPanel;
 }
-
+    
     class PaintStaticBars implements Runnable{
         public JPanel j;
         public MyQuery myQ;
@@ -2472,12 +2464,14 @@ public class Table extends javax.swing.JFrame {
 
         }
         public void run(){
+            ((JButton) component.get(11)).setEnabled(false);
             for(int i =1; i<366; i++){
                 
                  j.add(new Bar(component,i,myQ));
                  j.validate();
                  j.repaint();
             }
+            ((JButton) component.get(11)).setEnabled(true);
             
         }
     }
