@@ -198,34 +198,91 @@ public class JsonSimple {
                 System.out.println("Fail to load \"ConnectionSetting.json\"."); 
                 System.out.println("Auto initial c connection setting...\n");
           
-                settingArray.add("192.168.1.199");
-                settingArray.add("3306");
-                settingArray.add("r");
-                settingArray.add("root");
-                settingArray.add("");
-                settingArray.add("false");
+                if(OSValidator.isMac()){
+                    settingArray.add("192.168.1.199");
+                    settingArray.add("3306");
+                    settingArray.add("r");
+                    settingArray.add("root");
+                    settingArray.add("");
+                    settingArray.add("false");
 
-                System.out.println("Default connection setting:\n"+"IP:"+settingArray.get(0)+"\nport:"+settingArray.get(1)+"\ndatabase:"+settingArray.get(2)+"\nusername:"+settingArray.get(3)+"\npassword:"+settingArray.get(4));
-                
-                //CREATE DEFAULT CONNECTIONSETTING.JSON
-                ArrayList<Object> nametag =  new ArrayList<Object>();
-                nametag.add("ip");
-                nametag.add("port");
-                nametag.add("database");
-                nametag.add("username");
-                nametag.add("password");
-                nametag.add("isSERVER");
+                    System.out.println("Default connection setting:\n"+"IP:"+settingArray.get(0)+"\nport:"+settingArray.get(1)+"\ndatabase:"+settingArray.get(2)+"\nusername:"+settingArray.get(3)+"\npassword:"+settingArray.get(4));
 
-                ArrayList<Object> value =  new ArrayList<Object>();
-                value.add(settingArray.get(0));
-                value.add(settingArray.get(1));
-                value.add(settingArray.get(2));
-                value.add(settingArray.get(3));
-                value.add(settingArray.get(4));
-                value.add(settingArray.get(5));
-                this.writeJsonFile(nametag, value);
+                    //CREATE DEFAULT CONNECTIONSETTING.JSON
+                    ArrayList<Object> nametag =  new ArrayList<Object>();
+                    nametag.add("ip");
+                    nametag.add("port");
+                    nametag.add("database");
+                    nametag.add("username");
+                    nametag.add("password");
+                    nametag.add("isSERVER");
+
+                    ArrayList<Object> value =  new ArrayList<Object>();
+                    value.add(settingArray.get(0));
+                    value.add(settingArray.get(1));
+                    value.add(settingArray.get(2));
+                    value.add(settingArray.get(3));
+                    value.add(settingArray.get(4));
+                    value.add(settingArray.get(5));
+                    this.writeJsonFile(nametag, value);
+                }else if(OSValidator.isWindows()){
+                    settingArray.add("127.0.0.1");
+                    settingArray.add("3306");
+                    settingArray.add("r");
+                    settingArray.add("root");
+                    settingArray.add("password");
+                    settingArray.add("true");
+
+                    System.out.println("Default connection setting:\n"+"IP:"+settingArray.get(0)+"\nport:"+settingArray.get(1)+"\ndatabase:"+settingArray.get(2)+"\nusername:"+settingArray.get(3)+"\npassword:"+settingArray.get(4));
+
+                    //CREATE DEFAULT CONNECTIONSETTING.JSON
+                    ArrayList<Object> nametag =  new ArrayList<Object>();
+                    nametag.add("ip");
+                    nametag.add("port");
+                    nametag.add("database");
+                    nametag.add("username");
+                    nametag.add("password");
+                    nametag.add("isSERVER");
+
+                    ArrayList<Object> value =  new ArrayList<Object>();
+                    value.add(settingArray.get(0));
+                    value.add(settingArray.get(1));
+                    value.add(settingArray.get(2));
+                    value.add(settingArray.get(3));
+                    value.add(settingArray.get(4));
+                    value.add(settingArray.get(5));
+                    this.writeJsonFile(nametag, value);
+                }
+                else{
+                    settingArray.add("192.168.1.199");
+                    settingArray.add("3306");
+                    settingArray.add("r");
+                    settingArray.add("root");
+                    settingArray.add("");
+                    settingArray.add("false");
+
+                    System.out.println("Default connection setting:\n"+"IP:"+settingArray.get(0)+"\nport:"+settingArray.get(1)+"\ndatabase:"+settingArray.get(2)+"\nusername:"+settingArray.get(3)+"\npassword:"+settingArray.get(4));
+
+                    //CREATE DEFAULT CONNECTIONSETTING.JSON
+                    ArrayList<Object> nametag =  new ArrayList<Object>();
+                    nametag.add("ip");
+                    nametag.add("port");
+                    nametag.add("database");
+                    nametag.add("username");
+                    nametag.add("password");
+                    nametag.add("isSERVER");
+
+                    ArrayList<Object> value =  new ArrayList<Object>();
+                    value.add(settingArray.get(0));
+                    value.add(settingArray.get(1));
+                    value.add(settingArray.get(2));
+                    value.add(settingArray.get(3));
+                    value.add(settingArray.get(4));
+                    value.add(settingArray.get(5));
+                    this.writeJsonFile(nametag, value);
+                }
                 this.readConnectionSettingFile();
-
+                
                 
 	} catch (IOException e) {
 		e.printStackTrace();
@@ -236,16 +293,49 @@ public class JsonSimple {
       
      }
 }
-//
-//example 
-//        
-//        JSONObject obj = new JSONObject();
-//	obj.put("name", "mkyong.com");
-//	obj.put("age", new Integer(100));
-// 
-//	JSONArray list = new JSONArray();
-//	list.add("msg 1");
-//	list.add("msg 2");
-//	list.add("msg 3");
-// 
-//	obj.put("messages", list);
+class OSValidator {
+ 
+	private static String OS = System.getProperty("os.name").toLowerCase();
+ 
+	/*public static void main(String[] args) {
+ 
+		System.out.println(OS);
+ 
+		if (isWindows()) {
+			System.out.println("This is Windows");
+		} else if (isMac()) {
+			System.out.println("This is Mac");
+		} else if (isUnix()) {
+			System.out.println("This is Unix or Linux");
+		} else if (isSolaris()) {
+			System.out.println("This is Solaris");
+		} else {
+			System.out.println("Your OS is not support!!");
+		}
+	}*/
+ 
+	public static boolean isWindows() {
+ 
+		return (OS.indexOf("win") >= 0);
+ 
+	}
+ 
+	public static boolean isMac() {
+ 
+		return (OS.indexOf("mac") >= 0);
+ 
+	}
+ 
+	public static boolean isUnix() {
+ 
+		return (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0 );
+ 
+	}
+ 
+	public static boolean isSolaris() {
+ 
+		return (OS.indexOf("sunos") >= 0);
+ 
+	}
+ 
+}
