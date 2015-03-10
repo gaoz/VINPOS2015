@@ -182,7 +182,7 @@ public class Table extends javax.swing.JFrame {
             
         }
         public void run(){
-            
+            new Msg(" CONNECT TO VIN.METEOR.COM/isPrintable");
             try{
                 connection = new URL(url).openConnection();
                 connection.setRequestProperty("Accept-Charset", charset);
