@@ -118,11 +118,7 @@ class MyPrintable4 implements Printable {
     // date
     g2.setFont(new Font("Dialog", Font.PLAIN, 12));
     g2.setPaint(Color.black);
-    g2.drawString("Pick up at:", 0, yPositionAfterTableNumber+=15);          
-    g2.setFont(new Font("Dialog", Font.BOLD, 12));
-    g2.drawString(""+str[0]+" "+str[7]+" "+str[8], 0, yPositionAfterTableNumber+=15);     
-     
-    
+
     int i=10;
     // loop 
     for (int j =1; j<str.length; j++){          
@@ -146,17 +142,19 @@ class MyPrintable4 implements Printable {
     for (int j =2; j<str.length; j++){          
         // print the order names
         g2.setFont(new Font("Dialog", Font.PLAIN, 9));
+        Double l = Double.valueOf(fillNull(str[j]));
         
-        g2.drawString(moneyVariable.format(fillNull(str[j])), 160, yPositionAfterTableNumber+i3);
+        g2.drawString(moneyVariable.format(l), 160, yPositionAfterTableNumber+i3);
         j++;
         //print the prices
         i3=i3+10;// making space for the server list
     } 
     
     //calculate the subtotal first
-    long subTotal = 0;
+    Double subTotal = 0.00;
         for (int j =2; j<str.length; j++){   
-            subTotal +=  Long.parseLong(str[j]);
+            subTotal += Double.valueOf(fillNull(str[j]));
+            j++;
         }
     
     // initial the new y position

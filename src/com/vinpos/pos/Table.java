@@ -167,13 +167,22 @@ public class Table extends javax.swing.JFrame {
            
     }
     class MyRegisterPrinterServerTimer extends TimerTask{
-        String url = "http://vin.meteor.com/printable";
+        String url1 = "http://vin.meteor.com/printable";
+        String url2 = "http://vin.meteor.com/resetprint";
+        String url = url1;
         String charset = "UTF-8"; 
         //InputStream response;
         URLConnection connection;
-         String clientSentence;
+         String clientSentence1;
         
         public MyRegisterPrinterServerTimer() {
+           
+           
+            timer3.scheduleAtFixedRate(this, new java.util.Date(), 1000); // this make it run  when setting is open server printer again, 
+            
+        }
+        public void run(){
+            
             try{
                 connection = new URL(url).openConnection();
                 connection.setRequestProperty("Accept-Charset", charset);
@@ -184,50 +193,46 @@ public class Table extends javax.swing.JFrame {
             }catch(Exception e){
                 e.printStackTrace();
             }
-           
-            timer3.scheduleAtFixedRate(this, new java.util.Date(), 100); // this make it run  when setting is open server printer again, 
             
-        }
-        public void run(){
              try{
-                    
+                    System.out.println("print server running1...");
                     BufferedReader respon =
                                new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                    clientSentence = respon.readLine();
+                     System.out.println("print server running1a...");
+                    String clientSentence = respon.readLine();
+                     System.out.println("print server running1b...");
+                    
+                    System.out.println("print server running1d...");
+                    System.out.println("print server running2...");
+                    System.out.println("server Sentence ="+ clientSentence);
                     if(clientSentence!=null){
                         String[] tokens = clientSentence.split("\\*\\*");;
                         
-                        System.out.println("respond:"+clientSentence+"tokens:"+ tokens.length);
+                        System.out.println("Printingggggggggggggggggggggggggg");
                         
                         for(int i=1; i<tokens.length; i++){
                             
                             System.out.println("name:"+tokens[i]+" price:" + tokens[i+1]);
                             i++;
                         }
-                        PrintForJJRegister printForJJRegister = new PrintForJJRegister();
-                        printForJJRegister.printRegisterOrderForCustomer(tokens);
-                        
-                        
-                         try{
-                            URL oracle = new URL("http://vin.meteor.com/resetprint");
+                       PrintForJJRegister printForJJRegister = new PrintForJJRegister();
+                       printForJJRegister.printRegisterOrderForCustomer(tokens);
+                       url =url2;
 
-                            BufferedReader in = new BufferedReader(
-                            new InputStreamReader(oracle.openStream()));
-                            in.close();
-//                            String inputLine;
-//                            while ((inputLine = in.readLine()) != null)
-//                                System.out.println(inputLine);
-//                                
-                            }catch(Exception e){
-
-                            }
-                       
                     }
                     
              }catch(BindException e){
-                          e.printStackTrace();
+                          e.printStackTrace(); System.out.println("error"+ e);
+                          if(url.equals(url2)){
+                                url=url1;
+                                System.out.println("print server running1c...");
+                            }
                       }catch(Exception e){
-                          e.printStackTrace();
+                          e.printStackTrace(); System.out.println("error"+ e);
+                          if(url.equals(url2)){
+                                url=url1;
+                                System.out.println("print server running1c...");
+                            }
              }
         }
     }
