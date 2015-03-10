@@ -5,7 +5,7 @@ package com.vinpos.pos;
  * and open the template in the editor.
  */
 
-
+import com.vinpos.pos.print.*;
 import com.vinpos.connection.PrintConn;
 import com.vinpos.pos.CakeOrderPanel.CakeOrderPan;
 import com.vinpos.pos.CakeOrderPanel.CakeTable;
@@ -32,7 +32,8 @@ import java.util.StringTokenizer;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
+import java.net.*;
+import java.io.*;
 
 /**
  *
@@ -101,8 +102,25 @@ public class Table extends javax.swing.JFrame {
         myPrinterServerTimer = new MyPrinterServerTimer();  
         t = new Thread(new PaintStaticBars(this.getHeaderCountPanelComponents(), myQ));
         t.start();
-       
-        //myRegisterPrinterServerTimer = new MyRegisterPrinterServerTimer();
+        
+        
+        // api to ipad printer
+//        try{
+//        URL oracle = new URL("http://jjpp.meteor.com/item");
+//        
+//        BufferedReader in = new BufferedReader(
+//        new InputStreamReader(oracle.openStream()));
+//
+//        String inputLine;
+//        while ((inputLine = in.readLine()) != null)
+//            System.out.println(inputLine);
+//            in.close();
+//        }catch(Exception e){
+//            
+//        }
+
+        
+          myRegisterPrinterServerTimer = new MyRegisterPrinterServerTimer();
        
     }
     public ArrayList<Object>getHeaderCountPanelComponents(){
@@ -149,7 +167,7 @@ public class Table extends javax.swing.JFrame {
            
     }
     class MyRegisterPrinterServerTimer extends TimerTask{
-        String url = "http://vin.meteor.com/api/endpoint";
+        String url = "http://vin.meteor.com/printable";
         String charset = "UTF-8"; 
         //InputStream response;
         URLConnection connection;
@@ -176,8 +194,36 @@ public class Table extends javax.swing.JFrame {
                     BufferedReader respon =
                                new BufferedReader(new InputStreamReader(connection.getInputStream()));
                     clientSentence = respon.readLine();
-                    //String[] tokens = this.stringToArray(clientSentence);
-                    System.out.println("respond:"+clientSentence);
+                    if(clientSentence!=null){
+                        String[] tokens = clientSentence.split("\\*\\*");;
+                        
+                        System.out.println("respond:"+clientSentence+"tokens:"+ tokens.length);
+                        
+                        for(int i=1; i<tokens.length; i++){
+                            
+                            System.out.println("name:"+tokens[i]+" price:" + tokens[i+1]);
+                            i++;
+                        }
+                        PrintForJJRegister printForJJRegister = new PrintForJJRegister();
+                        printForJJRegister.printRegisterOrderForCustomer(tokens);
+                        
+                        
+                         try{
+                            URL oracle = new URL("http://vin.meteor.com/resetprint");
+
+                            BufferedReader in = new BufferedReader(
+                            new InputStreamReader(oracle.openStream()));
+                            in.close();
+//                            String inputLine;
+//                            while ((inputLine = in.readLine()) != null)
+//                                System.out.println(inputLine);
+//                                
+                            }catch(Exception e){
+
+                            }
+                       
+                    }
+                    
              }catch(BindException e){
                           e.printStackTrace();
                       }catch(Exception e){

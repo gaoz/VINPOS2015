@@ -3789,7 +3789,7 @@ public class JD2 extends java.awt.Dialog {
     }//GEN-LAST:event_jButton143ActionPerformed
 
     private void jButton145ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton145ActionPerformed
-        this.setDessertCourse("Chocolate Raspberry Cake","Chocolate Raspberry Cake",4.25);
+        this.setDessertCourse("Chocolate Raspberry Cake","Chocolate Raspberry Cake",4.95);
     }//GEN-LAST:event_jButton145ActionPerformed
 
     private void jButton146ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton146ActionPerformed
